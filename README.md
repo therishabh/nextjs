@@ -14,7 +14,7 @@ Want a **fast, SEO-friendly, full-stack website** without headaches? Next.js doe
 - Without Next.js → Your React site might load slow and struggle with SEO.  
 - With Next.js → Pages load instantly, and Google loves them.  
 
-Perfect for blogs, e-commerce, dashboards, and more! 🚀
+#### Perfect for blogs, e-commerce, dashboards, and more! 🚀
 ---
 
 Here’s a refined and well-structured version for your **Next.js learning document**:  
