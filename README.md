@@ -289,7 +289,6 @@ This is a nested + dynamic route. Each blog post page uses the blog layout and s
 
 **Dynamic routes** let you create pages that work for multiple URLs based on a parameter (like an ID or slug). You create them using **square brackets** in folder names inside the `app/` directory.
 
----
 
 ### ✅ Example
 
