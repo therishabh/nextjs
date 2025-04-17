@@ -320,7 +320,7 @@ Inside the page, you can use `params` to access the dynamic value.
 A **nested dynamic route** means you have a dynamic segment **inside a folder**, and that folder is also inside another route folder. This helps you build URLs like:
 
 ```
-/blog/2024/react-hooks
+/products/product1/reviews/review2
 ```
 
 
@@ -328,16 +328,17 @@ A **nested dynamic route** means you have a dynamic segment **inside a folder**,
 
 ```
 app/
-└── blog/
-    └── [year]/
-        └── [slug]/
-            └── page.tsx
+└── products/
+    └── [productId]/
+          └── reviews/
+                └── [reviewId]/
+                        └── page.tsx
 ```
 
 This structure matches URLs like:
 
-- `/blog/2024/react-hooks`
-- `/blog/2023/nextjs-routing`
+- `/products/120/reviews/2024`
+- `/products/234/reviews/394`
 
 ### 🔍 How It Works:
 
