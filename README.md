@@ -284,3 +284,41 @@ app/
 This is a nested + dynamic route. Each blog post page uses the blog layout and supports URLs like `/blog/hello-world`.
 
 ---
+
+## Dynamic Routes in Next.js (App Router)?
+
+**Dynamic routes** let you create pages that work for multiple URLs based on a parameter (like an ID or slug). You create them using **square brackets** in folder names inside the `app/` directory.
+
+---
+
+### ✅ Example
+
+```
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
+  return <div>My Post: {slug}</div>
+}
+```
+
+```
+app/
+└── product/
+    └── [id]/
+        └── page.tsx
+```
+
+➡️ This will match URLs like:
+
+- `/product/123`
+- `/product/shoes`
+- `/product/any-value`
+
+Inside the page, you can use `params` to access the dynamic value.
+
+📘 Docs: [Dynamic Routes – Next.js](https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes)
+---
+
