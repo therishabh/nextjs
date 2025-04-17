@@ -321,3 +321,41 @@ Inside the page, you can use `params` to access the dynamic value.
 📘 Docs: [Dynamic Routes – Next.js](https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes)
 ---
 
+## Nested Dynamic Route in Next.js (App Router)?
+
+A **nested dynamic route** means you have a dynamic segment **inside a folder**, and that folder is also inside another route folder. This helps you build URLs like:
+
+```
+/blog/2024/react-hooks
+```
+
+---
+
+### ✅ Example Folder Structure:
+
+```
+app/
+└── blog/
+    └── [year]/
+        └── [slug]/
+            └── page.tsx
+```
+
+This structure matches URLs like:
+
+- `/blog/2024/react-hooks`
+- `/blog/2023/nextjs-routing`
+
+### 🔍 How It Works:
+
+In `page.tsx`, you can access both dynamic parts using `params`:
+
+```tsx
+export default function BlogPost({ params }) {
+  const { year, slug } = params;
+  return <h1>{`Blog from ${year} - ${slug}`}</h1>;
+}
+```
+
+---
+
