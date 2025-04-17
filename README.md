@@ -527,3 +527,107 @@ export default function NotFound() {
   return <h1>Product not found</h1>;
 }
 ```
+
+---
+
+## What is File Colocation in Next.js (App Router)?
+
+**File colocation** means keeping all files related to a route — like its `page.tsx`, `loading.tsx`, `error.tsx`, `layout.tsx`, and `components` — **in the same folder**. This keeps your project organized and modular.
+
+### ✅ Example:
+
+```
+app/
+└── dashboard/
+    ├── page.tsx         ← main page
+    ├── loading.tsx      ← loading state
+    ├── error.tsx        ← error UI
+    ├── layout.tsx       ← layout wrapper
+    └── Chart.tsx        ← component used only by this route
+```
+
+Everything needed for the `/dashboard` route stays together.
+
+🔗 [Official Docs](https://nextjs.org/docs/app/getting-started/project-structure#colocation)
+
+---
+
+## 🔒 What are Private Folders in Next.js?
+
+In the **App Router** of Next.js, **private folders** are folder names that start with an underscore (`_`). These folders **won’t become routes**, and they are ignored by the routing system. You can use them to store reusable components, utilities, or logic related to a route — without exposing them in the URL.
+
+---
+
+#### ✅ Example:
+
+```
+app/
+└── dashboard/
+    ├── page.tsx
+    └── _components/
+        └── Chart.tsx
+```
+
+The `Chart.tsx` is used in `/dashboard`, but `/dashboard/_components` is **not accessible** via browser.
+
+#### 📁 Folder Structure Example
+
+```
+app/
+└── dashboard/
+      ├── page.tsx
+      └── _components/
+            ├── Sidebar.tsx
+            └── AnalyticsChart.tsx
+```
+
+#### 🔍 What’s Happening
+
+- `page.tsx` is the main UI for `/dashboard`.
+- `_components/` holds helper components like `Sidebar` and `AnalyticsChart` that are **only used inside dashboard**.
+- Since the folder starts with `_`, **it won’t create a route** like `/dashboard/_components`.
+
+➡️ Keeps your route folders clean and prevents accidental routing.
+
+📘 [Next.js Docs – Private Folders](https://nextjs.org/docs/app/getting-started/project-structure#private-folders)
+
+---
+
+## 🧩 What are Route Groups in Next.js?
+
+**Route Groups** in the Next.js App Router help you organize your folder structure **without affecting the URL path**.
+
+You create a route group using parentheses:
+
+#### 🏗️ Folder Structure
+
+```
+app/
+├── (marketing)/
+│   ├── home/
+│   │   └── page.tsx
+│   └── about/
+│       └── page.tsx
+├── (auth)/
+│   ├── login/
+│   │   └── page.tsx
+│   └── register/
+│       └── page.tsx
+```
+
+
+### 🔍 What URLs will look like:
+
+| Folder Path                    | URL Path     |
+|-------------------------------|--------------|
+| `(marketing)/home/page.tsx`   | `/home`      |
+| `(marketing)/about/page.tsx`  | `/about`     |
+| `(auth)/login/page.tsx`       | `/login`     |
+| `(auth)/register/page.tsx`    | `/register`  |
+
+
+### ✅ Benefits:
+- Keeps **marketing** and **auth** sections organized in separate groups.
+- Doesn’t change the user-facing URL.
+- Useful for applying **separate layouts** or middlewares to groups.
+
