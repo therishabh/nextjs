@@ -201,15 +201,13 @@ app/
 
 ----
 
-## 📘 File-Based Routing in Next.js (Latest Version - App Router)
+## File-Based Routing
 
 In the latest version of Next.js (using the `/app` directory), routing is **based on the file and folder structure** inside the `/app` folder.
 
 #### 🧱 Basic Concept:
 Each folder = one route segment  
 Each special file = controls part of the page (e.g. `page.tsx`, `layout.tsx`)
-
----
 
 ### 📂 Simple Example:
 
@@ -224,7 +222,6 @@ app/
         └── page.tsx  → route: `/blog/:id`
 ```
 
----
 
 | File/Folder            | URL             | Description                        |
 |------------------------|------------------|------------------------------------|
@@ -233,7 +230,6 @@ app/
 | `app/blog/page.tsx`    | `/blog`          | Blog listing page                  |
 | `app/blog/[id]/page.tsx` | `/blog/123`    | Dynamic route for blog post ID     |
 
----
 
 ### 🧠 Special Files:
 - `page.tsx`: defines a route’s page content.
@@ -247,8 +243,6 @@ app/
 ## Nested Routes
 
 Let’s look at **nested routes** in the **Next.js App Router** with **2 easy examples**:
-
----
 
 ### ✅ Example 1: Dashboard and Settings Page
 
@@ -265,7 +259,6 @@ app/
 
 This is a **nested route** where the `settings` page lives inside the `dashboard` section and uses its layout.
 
----
 
 ### ✅ Example 2: Blog with Dynamic Post
 
@@ -285,7 +278,7 @@ This is a nested + dynamic route. Each blog post page uses the blog layout and s
 
 ---
 
-## Dynamic Routes in Next.js (App Router)?
+## Dynamic Routes
 
 **Dynamic routes** let you create pages that work for multiple URLs based on a parameter (like an ID or slug). You create them using **square brackets** in folder names inside the `app/` directory.
 
@@ -319,9 +312,10 @@ app/
 Inside the page, you can use `params` to access the dynamic value.
 
 📘 Docs: [Dynamic Routes – Next.js](https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes)
+
 ---
 
-## Nested Dynamic Route in Next.js (App Router)?
+## Nested Dynamic Route
 
 A **nested dynamic route** means you have a dynamic segment **inside a folder**, and that folder is also inside another route folder. This helps you build URLs like:
 
@@ -329,7 +323,6 @@ A **nested dynamic route** means you have a dynamic segment **inside a folder**,
 /blog/2024/react-hooks
 ```
 
----
 
 ### ✅ Example Folder Structure:
 
