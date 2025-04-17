@@ -473,3 +473,57 @@ This pattern is commonly used for:
 - Nested category pages
 - Hierarchical content structures
 - Multi-segment dynamic routing
+
+---
+
+## 🚫 404 Not Found Page
+
+To create a **custom 404 page** in the latest Next.js (using the `app/` directory), simply add a `not-found.tsx` file at the appropriate level:
+
+#### 📁 Example:
+
+```
+app/
+├── page.tsx
+├── not-found.tsx ← ✅ custom 404 page
+```
+
+Then use the `notFound()` function from `next/navigation` inside your code to manually trigger it.
+
+Here’s a proper example of using `notFound()` in the latest Next.js (App Router) to show a custom 404 page:
+
+### 📁 Folder Structure
+
+```
+app/
+├── product/
+│     └── [id]/
+│           ├── page.tsx
+│           └── not-found.tsx
+```
+
+### 📄 `page.tsx`
+
+```tsx
+import { notFound } from 'next/navigation';
+
+export default function ProductPage({ params }) {
+  const { id } = params;
+
+  const product = getProductById(id); // pretend function
+
+  if (!product) {
+    notFound(); // 👈 redirects to not-found.tsx
+  }
+
+  return <h1>{product.name}</h1>;
+}
+```
+
+### 📄 `not-found.tsx`
+
+```tsx
+export default function NotFound() {
+  return <h1>Product not found</h1>;
+}
+```
