@@ -68,7 +68,6 @@ These folders help organize your project files and static content.
 | `public`   | For images, fonts, and other static files users can see |
 | `src`      | (Optional) A folder to keep all your code in one place |
 
----
 
 ### 📄 **Top-Level Files**  
 These files help in project setup, configuration, and environment handling.
@@ -89,7 +88,6 @@ These files help in project setup, configuration, and environment handling.
 | `tsconfig.json` | Settings for TypeScript |
 | `jsconfig.json` | Settings for JavaScript |
 
----
 
 ### 📂 **Routing Files**  
 These files are used inside the `app/` folder to control how pages look and behave.
@@ -111,7 +109,6 @@ These files are used inside the `app/` folder to control how pages look and beha
 ### React Server Components (RSCs)  
 **React Server Components** allow rendering components *on the server* instead of the client, reducing bundle size and improving performance.  
 
----
 
 ### **Key Differences**  
 | Feature               | Client Components (`'use client'`) | Server Components (Default) |
@@ -122,13 +119,10 @@ These files are used inside the `app/` folder to control how pages look and beha
 | **Data Fetching**     | Client-side (e.g., `fetch`)       | Direct server access       |
 | **SEO**               | Lower (CSR)                       | Higher (SSR/SSG)           |
 
----
 
 ### **How It Works**  
 1. **Server** renders components → Sends lightweight HTML/JSON to client.  
 2. **Client** hydrates only interactive parts (`'use client'`).  
-
----
 
 ### **Example: Server + Client Components**  
 #### 1. **Server Component** (`app/page.js`)  
@@ -162,8 +156,6 @@ export default function LikeButton() {
   return <button onClick={() => setLikes(likes + 1)}>👍 {likes}</button>;
 }
 ```
-
----
 
 ### **Why Use Server Components?**  
 - **Faster Loads**: No client-side JS for static parts.  
