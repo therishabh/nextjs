@@ -344,10 +344,45 @@ This structure matches URLs like:
 In `page.tsx`, you can access both dynamic parts using `params`:
 
 ```tsx
-export default function BlogPost({ params }) {
-  const { year, slug } = params;
-  return <h1>{`Blog from ${year} - ${slug}`}</h1>;
+// Import Next.js navigation utilities and React
+import { notFound } from "next/navigation";
+import React from "react";
+
+// Define TypeScript interface for component props
+interface IProductReviewPageProps {
+  params: Promise<{ productId: string; reviewId: string }>;
 }
+
+/**
+ * ProductReviewPage Component
+ * 
+ * A dynamic page that displays product review information.
+ * Handles both the product ID and review ID from the URL parameters.
+ * 
+ * @param {IProductReviewPageProps} props - Component props containing route parameters
+ * @returns {Promise<React.JSX.Element>} - The rendered product review page
+ */
+const ProductReviewPage = async ({ params }: IProductReviewPageProps) => {
+  // Destructure and await the route parameters
+  const { productId, reviewId } = await params;
+
+  // Validate reviewId - show 404 page if reviewId is greater than 1000
+  if(parseInt(reviewId) > 1000) {
+    notFound(); // Next.js function to show 404 page
+  }
+
+  // Render the product review information
+  return (
+    <div>
+      <h1>Product Review Page</h1>
+      <h2>Product Id: {productId}</h2>  {/* Display product ID */}
+      <h2>Review Id: {reviewId}</h2>   {/* Display review ID */}
+    </div>
+  );
+};
+
+export default ProductReviewPage;
+
 ```
 
 ---
