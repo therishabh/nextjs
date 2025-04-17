@@ -388,3 +388,87 @@ export default ProductReviewPage;
 
 ---
 
+## Catch-All Segments
+
+**Catch-all segments** let you match **multiple parts of a URL** in a single dynamic route — perfect for deeply nested or unknown URL structures.
+
+---
+
+### 🧩 Example:
+
+Folder structure:
+
+```
+app/
+  └── docs/
+        └── [...slug]/
+              └── page.tsx
+```
+
+Matches:
+
+- `/docs`
+- `/docs/intro`
+- `/docs/2024/nextjs/app-router`
+
+In `page.tsx`, the `params.slug` will be an **array** of the path segments.
+
+For optional catch-all, use `[[...slug]]`.
+
+Here's the annotated version of your `DocsNestedPage` component with detailed comments:
+
+```typescript
+// Import React (required for JSX)
+import React from "react";
+
+// TypeScript interface defining the expected props structure
+interface IDocsNestedPageProps {
+  params: Promise<{ slug: string[] }>; // Accepts a Promise containing slug array
+}
+
+/**
+ * DocsNestedPage Component
+ * 
+ * A dynamic nested documentation page handler that renders different content
+ * based on the number of slug parameters in the URL path.
+ * 
+ * @param {IDocsNestedPageProps} props - Component props containing route parameters
+ * @returns {Promise<React.JSX.Element>} - Rendered content based on slug length
+ */
+const DocsNestedPage = async ({ params }: IDocsNestedPageProps) => {
+  // Await and destructure the slug array from route parameters
+  const { slug } = await params;
+
+  // Conditional rendering based on slug array length
+  if (slug?.length === 1) {
+    // Case 1: Single slug parameter (e.g., /docs/features)
+    return <div>DocsNestedPage for {slug[0]}</div>;
+  } else if (slug?.length === 2) {
+    // Case 2: Two slug parameters (e.g., /docs/features/advanced)
+    return (
+      <div>
+        DocNested Page for {slug[0]} and {slug[1]}
+      </div>
+    );
+  }
+
+  // Default case: No slug parameters (e.g., /docs)
+  return <div>DocsNestedPage</div>;
+};
+
+export default DocsNestedPage;
+```
+**Usage Examples**:
+   - `/docs/api` → Shows "DocsNestedPage for api"
+   - `/docs/api/v2` → Shows "DocNested Page for api and v2"
+   - `/docs` → Shows "DocsNestedPage"
+
+**Async Component**:
+   - Uses `async/await` to handle Promise-wrapped params
+   - Required for Server Components that need to process route params
+
+This pattern is commonly used for:
+- Documentation systems
+- Nested category pages
+- Hierarchical content structures
+- Multi-segment dynamic routing
