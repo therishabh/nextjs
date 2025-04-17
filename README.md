@@ -1,4 +1,4 @@
-### What exactly is Next.js? 
+## What exactly is Next.js? 
 **Next.js is like a supercharged version of React** that makes building websites easier and faster.  
 
 ### In Simple Terms:  
@@ -18,7 +18,7 @@ Want a **fast, SEO-friendly, full-stack website** without headaches? Next.js doe
 
 ---
 
-### **React vs. Next.js**  
+## **React vs. Next.js**  
 
 #### **React**  
 - A **JavaScript library** for building dynamic and reusable user interfaces.  
@@ -40,9 +40,6 @@ Want a **fast, SEO-friendly, full-stack website** without headaches? Next.js doe
 - Use **React** when you need full control over configurations.  
 - Use **Next.js** when you want a **batteries-included** solution for fast, scalable, and SEO-optimized apps.  
 
-
----
-
 ### Why need to learn Next.js :
 
 Learning Next.js is important because:  
@@ -55,6 +52,8 @@ Learning Next.js is important because:
 6. **Great Developer Experience** – Hot reloading, easy deployment, and strong community support.  
 
 Ideal for modern, scalable web apps! 🚀
+
+---
 
 ## Project structure
 
@@ -167,3 +166,121 @@ export default function LikeButton() {
 
 ---
 
+## Next.js File-System Routing
+
+Next.js uses **folders & files** to define routes in your app. No manual setup needed!  
+
+#### **Basic Rules**  
+| Folder/File          | Becomes This Route  | Notes                          |
+|----------------------|---------------------|--------------------------------|
+| `app/page.js`        | `/` (Homepage)      | Required for each route.       |
+| `app/about/page.js`  | `/about`            | Folders create the URL path.   |
+| `app/blog/[id]/page.js` | `/blog/123`       | `[id]` = Dynamic segment.      |
+| `app/(auth)/login/page.js` | `/login`   | `(auth)` = Route group (hidden in URL). |
+
+#### **Special Files**  
+- `layout.js` → Shared UI (e.g., navbar).  
+- `loading.js` → Shows while page loads.  
+- `error.js` → Displays if something breaks.  
+
+#### **Example Structure**  
+```
+app/
+├── (dashboard)/          ← Route Group
+│   ├── settings/page.js  → /settings
+│   └── layout.js        ← Shared layout
+├── shop/
+│   ├── [id]/page.js     → /shop/42
+│   └── page.js          → /shop
+└── page.js              → Homepage (/)
+```
+
+**Why It’s Awesome?**  
+🚀 **No config needed** – Just add files!  
+📂 **Clean organization** – Folders = URLs.  
+
+----
+
+## 📘 File-Based Routing in Next.js (Latest Version - App Router)
+
+In the latest version of Next.js (using the `/app` directory), routing is **based on the file and folder structure** inside the `/app` folder.
+
+#### 🧱 Basic Concept:
+Each folder = one route segment  
+Each special file = controls part of the page (e.g. `page.tsx`, `layout.tsx`)
+
+---
+
+### 📂 Simple Example:
+
+```
+app/
+├── page.tsx          → route: `/`
+├── about/
+│   └── page.tsx      → route: `/about`
+└── blog/
+    ├── page.tsx      → route: `/blog`
+    └── [id]/
+        └── page.tsx  → route: `/blog/:id`
+```
+
+---
+
+| File/Folder            | URL             | Description                        |
+|------------------------|------------------|------------------------------------|
+| `app/page.tsx`         | `/`              | Homepage                           |
+| `app/about/page.tsx`   | `/about`         | Static route                       |
+| `app/blog/page.tsx`    | `/blog`          | Blog listing page                  |
+| `app/blog/[id]/page.tsx` | `/blog/123`    | Dynamic route for blog post ID     |
+
+---
+
+### 🧠 Special Files:
+- `page.tsx`: defines a route’s page content.
+- `layout.tsx`: wraps multiple pages with common layout (e.g., sidebar).
+- `loading.tsx`: shows a loading screen while the page loads.
+- `error.tsx`: custom error page for the route.
+- `[param]`: dynamic route segments.
+
+-----
+
+## Nested Routes
+
+Let’s look at **nested routes** in the **Next.js App Router** with **2 easy examples**:
+
+---
+
+### ✅ Example 1: Dashboard and Settings Page
+
+```
+app/
+└── dashboard/
+    ├── layout.tsx
+    └── settings/
+        └── page.tsx
+```
+
+- `dashboard/layout.tsx` → Shared layout for all dashboard pages  
+- `dashboard/settings/page.tsx` → Renders at **`/dashboard/settings`**
+
+This is a **nested route** where the `settings` page lives inside the `dashboard` section and uses its layout.
+
+---
+
+### ✅ Example 2: Blog with Dynamic Post
+
+```
+app/
+└── blog/
+    ├── layout.tsx
+    ├── page.tsx
+    └── [slug]/
+        └── page.tsx
+```
+
+- `blog/page.tsx` → Renders blog list at `/blog`
+- `blog/[slug]/page.tsx` → Renders individual blog post at `/blog/some-title`
+
+This is a nested + dynamic route. Each blog post page uses the blog layout and supports URLs like `/blog/hello-world`.
+
+---
