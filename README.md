@@ -415,8 +415,6 @@ In `page.tsx`, the `params.slug` will be an **array** of the path segments.
 
 For optional catch-all, use `[[...slug]]`.
 
-Here's the annotated version of your `DocsNestedPage` component with detailed comments:
-
 ```typescript
 // Import React (required for JSX)
 import React from "react";
@@ -458,6 +456,9 @@ const DocsNestedPage = async ({ params }: IDocsNestedPageProps) => {
 
 export default DocsNestedPage;
 ```
+
+If you use [...slug], the /docs route will not work unless you have a separate docs/page.tsx file. To make the slug optional and also handle /docs, use [[...slug]] instead. With this setup, when a user visits /docs, the catch-all route will still be triggered, and based on the example logic, the output will be: DocsNestedPage.
+
 **Usage Examples**:
    - `/docs/api` → Shows "DocsNestedPage for api"
    - `/docs/api/v2` → Shows "DocNested Page for api and v2"
