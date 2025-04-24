@@ -631,3 +631,67 @@ app/
 - Doesn’t change the user-facing URL.
 - Useful for applying **separate layouts** or middlewares to groups.
 
+---
+---
+---
+
+## What are Layouts in Next.js (App Router)?
+
+In the latest Next.js App Router, **layouts** are special React components that wrap around pages and **persist across route changes**. They’re used for shared UI like navigation bars, footers, sidebars, etc.
+
+### ✅ Key Features:
+- Defined using `layout.tsx`
+- Can be nested at any level
+- Don’t re-render on navigation unless their path changes
+- Great for consistent design and structure
+
+### 🎯 Real-World Use Case: Admin Dashboard
+
+You have these routes:
+
+- `/admin`
+- `/admin/users`
+- `/admin/settings`
+
+And you want a **sidebar** and **top navigation** to stay visible across all admin pages.
+
+### 📁 Folder Structure:
+
+```
+app/
+└── admin/
+    ├── layout.tsx       ← shared layout for all admin pages
+    ├── page.tsx         ← main admin dashboard
+    ├── users/
+    │   └── page.tsx     ← users page
+    └── settings/
+        └── page.tsx     ← settings page
+```
+
+---
+
+### 🧱 `layout.tsx`
+
+```tsx
+export default function AdminLayout({ children }) {
+  return (
+    <div className="flex">
+      <Sidebar />
+      <div className="flex-1">
+        <TopNav />
+        <main>{children}</main>
+      </div>
+    </div>
+  );
+}
+```
+
+### ✅ Result:
+
+- All `/admin` routes use this layout.
+- Layout is **persistent** – it doesn’t re-render on navigation within `/admin`.
+
+---
+---
+---
+
