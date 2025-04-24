@@ -17,6 +17,8 @@ Want a **fast, SEO-friendly, full-stack website** without headaches? Next.js doe
 #### Perfect for blogs, e-commerce, dashboards, and more! 🚀
 
 ---
+---
+---
 
 ## **React vs. Next.js**  
 
@@ -53,6 +55,8 @@ Learning Next.js is important because:
 
 Ideal for modern, scalable web apps! 🚀
 
+---
+---
 ---
 
 ## Project structure
@@ -103,6 +107,8 @@ These files are used inside the `app/` folder to control how pages look and beha
 | `template.js/.jsx/.tsx` | Helps re-render a layout with fresh data |
 | `default.js/.jsx/.tsx` | Fallback page in parallel routing |
 
+---
+---
 ---
 
 ### React Server Components (RSCs)  
@@ -165,6 +171,8 @@ export default function LikeButton() {
 - Need `useState`, `useEffect`, or browser APIs (use `'use client'`).  
 
 ---
+---
+---
 
 ## Next.js File-System Routing
 
@@ -199,7 +207,9 @@ app/
 🚀 **No config needed** – Just add files!  
 📂 **Clean organization** – Folders = URLs.  
 
-----
+---
+---
+---
 
 ## File-Based Routing
 
@@ -238,7 +248,9 @@ app/
 - `error.tsx`: custom error page for the route.
 - `[param]`: dynamic route segments.
 
------
+---
+---
+---
 
 ## Nested Routes
 
@@ -277,6 +289,8 @@ app/
 This is a nested + dynamic route. Each blog post page uses the blog layout and supports URLs like `/blog/hello-world`.
 
 ---
+---
+---
 
 ## Dynamic Routes
 
@@ -313,6 +327,8 @@ Inside the page, you can use `params` to access the dynamic value.
 
 📘 Docs: [Dynamic Routes – Next.js](https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes)
 
+---
+---
 ---
 
 ## Nested Dynamic Route
@@ -386,6 +402,8 @@ export default ProductReviewPage;
 
 ```
 
+---
+---
 ---
 
 ## Catch-All Segments
@@ -475,6 +493,8 @@ This pattern is commonly used for:
 - Multi-segment dynamic routing
 
 ---
+---
+---
 
 ## 🚫 404 Not Found Page
 
@@ -529,6 +549,8 @@ export default function NotFound() {
 ```
 
 ---
+---
+---
 
 ## What is File Colocation in Next.js (App Router)?
 
@@ -550,6 +572,8 @@ Everything needed for the `/dashboard` route stays together.
 
 🔗 [Official Docs](https://nextjs.org/docs/app/getting-started/project-structure#colocation)
 
+---
+---
 ---
 
 ## 🔒 What are Private Folders in Next.js?
@@ -591,6 +615,8 @@ app/
 
 📘 [Next.js Docs – Private Folders](https://nextjs.org/docs/app/getting-started/project-structure#private-folders)
 
+---
+---
 ---
 
 ## 🧩 What are Route Groups in Next.js?
@@ -635,7 +661,7 @@ app/
 ---
 ---
 
-## What are Layouts in Next.js (App Router)?
+## 📐 What are Layouts in Next.js?
 
 In the latest Next.js App Router, **layouts** are special React components that wrap around pages and **persist across route changes**. They’re used for shared UI like navigation bars, footers, sidebars, etc.
 
