@@ -792,3 +792,858 @@ export default function SettingsPage() {
 ---
 ---
 
+## What Are Multiple Root Layouts in Next.js?
+
+In Next.js, you can define **multiple root layouts** to create **completely separate sections of your app**—each with its own HTML structure, `<head>`, and layout logic. This is helpful for areas like:
+
+- A marketing website
+- A docs section
+- A dashboard with login
+- A blog
+
+Each section can work independently, almost like mini apps inside your main app.
+
+---
+
+### 📁 Example Folder Structure:
+
+```
+app/
+├── (marketing)/
+│   ├── layout.tsx     → Root layout for marketing
+│   └── page.tsx       → /
+├── (dashboard)/
+│   ├── layout.tsx     → Root layout for dashboard
+|   └── dashboard
+│          └── page.tsx       → /dashboard
+```
+
+In this setup:
+- `/` uses `marketing/layout.tsx`
+- `/dashboard` uses `dashboard/layout.tsx`
+
+Each layout can have a **different HTML structure**: different `<html>`, `<head>`, themes, styles, or even script behavior.
+
+---
+
+### ✅ Use Cases:
+- Different user roles (admin vs customer)
+- Authenticated vs public sections
+- Distinct branding/themes
+
+---
+---
+---
+
+## 📌 What is **Routing Metadata** in Next.js?
+
+In the **App Router** of Next.js (latest versions), you can add **metadata** to any route — such as `<title>`, `<meta name="description">`, Open Graph tags, Twitter cards, icons, and more — **without touching `_document.tsx` or custom Head code**.
+
+This helps improve **SEO**, **social sharing**, and **browser experience**, **per page or per layout**.
+
+---
+
+### 🔧 How to Add Metadata
+
+Next.js provides 2 ways to define metadata:
+
+#### 1. **Static Metadata** (basic usage)
+Add a `metadata` object directly in your layout or page file.
+
+```tsx
+// app/about/page.tsx
+
+export const metadata = {
+  title: "About Us",
+  description: "Learn more about our company and mission",
+};
+```
+
+---
+
+#### 2. **Dynamic Metadata** (when title or meta depends on dynamic data)
+
+```tsx
+// app/blog/[slug]/page.tsx
+
+export async function generateMetadata({ params }) {
+  const post = await getPost(params.slug);
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+  };
+}
+```
+
+---
+
+### 📁 Metadata File Locations
+
+| File Type      | Use Case                                         |
+|----------------|--------------------------------------------------|
+| `metadata` object in page.tsx or layout.tsx | Per route metadata |
+| `icon.png`, `favicon.ico` in `/app` or `/public` | Icons and favicons |
+| `manifest.webmanifest` in `/app` | PWA and web metadata |
+
+---
+
+### 🧪 Example with Open Graph and Twitter
+
+```tsx
+export const metadata = {
+  title: "My Blog Post",
+  description: "This is a blog post about Next.js routing.",
+  openGraph: {
+    title: "My Blog Post",
+    description: "Open Graph description here",
+    url: "https://example.com/blog/my-post",
+    siteName: "Example Blog",
+    images: [
+      {
+        url: "https://example.com/og-image.png",
+        width: 800,
+        height: 600,
+      },
+    ],
+    locale: "en_US",
+    type: "article",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "My Blog Post",
+    description: "Twitter card description",
+    images: ["https://example.com/twitter-image.png"],
+  },
+};
+```
+
+This auto-injects SEO and social tags in the page's `<head>`.
+
+---
+
+### 📌 Benefits:
+
+- Built-in TypeScript support
+- Automatic `<head>` injection
+- No need to manually use `<Head>` from `next/head`
+- Scales across nested layouts/pages
+
+---
+
+### ✅ Use Cases
+
+- Different `<title>` and `<description>` per page
+- Dynamic meta tags for blog/news/product pages
+- SEO + social media integration (OpenGraph/Twitter)
+
+---
+---
+---
+
+## 🏷️ What is title metadata?
+
+Let’s go step by step to understand the different ways you can define **`title` metadata** in **Next.js App Router**, especially using:  
+
+- **`default`**
+- **`template`**
+- **`absolute`**
+
+---
+
+### 🧠 First, What's `title` in Metadata?
+
+The `title` defines the text that appears in:
+
+- The **browser tab**
+- **Search engines** like Google
+- When **sharing on social media**
+
+---
+
+### 🧩 3 Ways to Define `title` Metadata in Next.js
+
+### 1. ✅ **`default` title**
+Used as a fallback when a page doesn’t define its own title.
+
+```tsx
+// app/layout.tsx
+
+export const metadata = {
+  title: {
+    default: 'MySite',
+  },
+};
+```
+
+🟢 If a page doesn’t provide a title, "MySite" will be used.
+
+---
+
+### 2. 🧩 **`template` title**
+Used to format all titles consistently.
+
+```tsx
+// app/layout.tsx
+
+export const metadata = {
+  title: {
+    default: 'MySite',
+    template: '%s | MySite',
+  },
+};
+```
+
+If a page sets:
+
+```tsx
+export const metadata = {
+  title: 'About',
+};
+```
+
+🟢 Final output:
+
+```html
+<title>About | MySite</title>
+```
+
+If a page doesn’t set a title, it uses the `default`, so:
+
+```html
+<title>MySite</title>
+```
+
+---
+
+### 3. 🛑 **`absolute` title**
+If you want to **bypass the template**, just return a string instead of using the object format.
+
+```tsx
+// app/special/page.tsx
+
+export const metadata = {
+  title: {
+   absolute: 'Custom Landing Page Title', // Absolute title
+  }
+};
+```
+
+🟢 This will **not** use the `template` from layout. It’s a direct override.
+
+```html
+<title>Custom Landing Page Title</title>
+```
+
+---
+
+### ✅ Summary Table
+
+| Type       | Where to Use          | Behavior                                              |
+|------------|------------------------|--------------------------------------------------------|
+| `default`  | In `layout.tsx`        | Used if page doesn't define a title                   |
+| `template` | In `layout.tsx`        | Formats all titles like `"About | MySite"`            |
+| `absolute` | In individual `page.tsx` | Overrides the layout and uses plain title             |
+
+---
+
+### 🧪 Real-life Example
+
+```tsx
+// app/layout.tsx
+export const metadata = {
+  title: {
+    default: 'Docs App',
+    template: '%s - Docs App',
+  },
+};
+
+// app/home/page.tsx
+export const metadata = {
+  title: 'Home',
+}; 
+// Result: <title>Home - Docs App</title>
+
+// app/contact/page.tsx
+export const metadata = {
+  title: 'Contact Us',
+};
+// Result: <title>Contact Us - Docs App</title>
+
+// app/landing/page.tsx
+export const metadata = {
+  title: '🚀 Welcome to Our Landing Page', // absolute
+};
+// Result: <title>🚀 Welcome to Our Landing Page</title>
+```
+
+---
+---
+---
+
+### 🔗 What is the `Link` Component?
+
+In **Next.js**, the `Link` component is used to **navigate between pages** in your app **without refreshing the page** (client-side navigation).
+
+This makes navigation **faster and smoother**, just like in single-page applications (SPAs).
+
+---
+
+### 🧱 Basic Example
+
+```tsx
+// app/page.tsx or any React component
+
+import Link from 'next/link';
+
+export default function HomePage() {
+  return (
+    <div>
+      <h1>Welcome</h1>
+      <Link href="/about">Go to About Page</Link>
+    </div>
+  );
+}
+```
+
+✅ Clicking the link takes you to `/about` **without reloading the whole page**.
+
+---
+
+### 💡 Why use `Link` instead of `<a>`?
+
+| Feature                          | `<a>` tag           | `Link` component         |
+|----------------------------------|----------------------|---------------------------|
+| Full page reload?                | Yes                  | ❌ No                     |
+| Preserves app state              | No                   | ✅ Yes                    |
+| Optimized for Next.js routing    | ❌ No                | ✅ Yes                    |
+| Preloads the linked page (lazy) | ❌ No                | ✅ Yes (on hover or view) |
+
+---
+
+### 🧭 With Dynamic Routes
+
+```tsx
+<Link href={`/blog/${slug}`}>Read More</Link>
+```
+
+If your folder structure is like:
+
+```
+app/
+└── blog/
+    └── [slug]/
+        └── page.tsx
+```
+
+It’ll correctly link to the right blog post.
+
+---
+
+### 🎯 Adding Styling
+
+You can wrap any element with `Link`, like a styled button or card:
+
+```tsx
+<Link href="/about">
+  <button className="text-blue-500 underline">About Us</button>
+</Link>
+```
+
+---
+
+Let’s go through the **attributes (props)** you can use with the **`Link` component** in **Next.js** (latest App Router version) — explained in **simple English** with examples 🚀
+
+
+### 🧩 Link Component Attributes
+
+| Attribute      | Type     | Description                                                                 | Example                                                                 |
+|----------------|----------|-----------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| `href`         | `string` | ✅ **Required.** The path to navigate to.                                   | `<Link href="/about">About</Link>`                                     |
+| `replace`      | `boolean`| Replaces the current history entry instead of adding a new one.             | `<Link href="/about" replace>About</Link>`                             |
+| `prefetch`     | `boolean`| Preloads the page in the background when visible (enabled by default).      | `<Link href="/about" prefetch={false}>About</Link>`                    |
+| `scroll`       | `boolean`| Controls whether to scroll to top of page after navigation.                 | `<Link href="/about" scroll={false}>About</Link>`                      |
+| `shallow`      | `boolean`| Updates the URL without running `getServerSideProps` / data fetching again.| (Used in Pages Router only)                                            |
+| `legacyBehavior` | `boolean` | Renders an anchor (`<a>`) tag as a child (older behavior).                | `<Link href="/about" legacyBehavior><a>About</a></Link>`              |
+| `locale`       | `string` or `false` | Controls which locale is used when navigating (for i18n).         | `<Link href="/about" locale="fr">About (FR)</Link>`                   |
+| `passHref`     | `boolean`| Ensures `href` is passed to the child. Used with `legacyBehavior`.         | `<Link href="/about" passHref legacyBehavior><a>About</a></Link>`     |
+
+---
+
+## ✅ Examples for Key Attributes
+
+### 1. 🔁 `replace`
+
+```tsx
+<Link href="/profile" replace>
+  Go to Profile
+</Link>
+```
+
+This won’t add a new entry to browser history — it **replaces** the current one.
+
+---
+
+### 2. 💤 `prefetch`
+
+```tsx
+<Link href="/contact" prefetch={false}>
+  Contact Us
+</Link>
+```
+
+Disables automatic background preloading (useful if the page is rarely visited).
+
+---
+
+### 3. 🎯 `scroll`
+
+```tsx
+<Link href="/faq" scroll={false}>
+  FAQ
+</Link>
+```
+
+Prevents auto scroll to top after navigation. Keeps current scroll position.
+
+---
+
+### 4. 🌐 `locale`
+
+```tsx
+<Link href="/about" locale="de">
+  Über uns (German)
+</Link>
+```
+
+Will navigate to the German version of the page if internationalization is enabled.
+
+---
+
+### ⚠️ Note
+
+- `shallow` only works with the **Pages Router**, not App Router.
+- Most of the time, just using `href` is enough.
+- `prefetch`, `replace`, and `scroll` are the most commonly used optional props.
+
+---
+
+### ✅ Summary
+
+- `Link` is used for **client-side navigation**
+- It replaces traditional `<a>` in most cases
+- Helps with **faster page transitions**
+- Works with **dynamic routes** too
+- Supports **preloading** of pages
+
+---
+---
+---
+
+## 🔗 What is an Active Link?
+
+An **Active Link** is the navigation link that points to the **current route/page** the user is on.
+
+👉 It’s commonly used to **highlight the current page** in a navigation bar.  
+
+
+## 🧠 How to Create Active Links in Next.js App Router?
+
+Next.js doesn't highlight active links automatically. You need to do it **manually using the `usePathname()` hook** from `next/navigation`.
+
+---
+
+## ✅ Step-by-Step Example
+
+### 1. 🧩 Setup Links
+
+```tsx
+// app/components/NavLink.tsx
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import clsx from 'clsx'; // Optional: helps handle conditional classNames
+
+type NavLinkProps = {
+  href: string;
+  children: React.ReactNode;
+};
+
+export default function NavLink({ href, children }: NavLinkProps) {
+  const pathname = usePathname();
+
+  const isActive = pathname === href;
+
+  return (
+    <Link
+      href={href}
+      className={clsx(
+        'px-4 py-2 rounded',
+        isActive ? 'bg-blue-600 text-white' : 'text-gray-700'
+      )}
+    >
+      {children}
+    </Link>
+  );
+}
+```
+
+> 🛠️ We're using `clsx` to manage conditional class names. You can use plain JS `? :` too.
+
+---
+
+### 2. 🧭 Use in Your Layout or Header
+
+```tsx
+// app/components/Navbar.tsx
+
+import NavLink from './NavLink';
+
+export default function Navbar() {
+  return (
+    <nav className="flex space-x-4 p-4 border-b">
+      <NavLink href="/">Home</NavLink>
+      <NavLink href="/about">About</NavLink>
+      <NavLink href="/blog">Blog</NavLink>
+    </nav>
+  );
+}
+```
+
+---
+
+## 🧠 Logic Behind It
+
+- `usePathname()` gives you the **current route** (like `/about`).
+- You compare it to each `Link`'s `href`.
+- If they match → it’s active → apply special styling.
+
+---
+
+## 🧪 Optional: Partial Matching
+
+If you want `/blog/post-1` to still highlight `/blog`, use:
+
+```tsx
+const isActive = pathname.startsWith(href);
+```
+
+Just be careful: `/blog` will also match `/blog123`. You can customize logic as needed.
+
+---
+
+## ✅ Final Output
+
+Your navbar will **automatically highlight the current page**, no matter where the user is in your app — and it works **client-side** without refreshes.
+
+---
+---
+---
+
+## 🧾 What are `params` and `searchParams`?
+
+| Name           | What it means                            | Where it comes from                     |
+|----------------|------------------------------------------|------------------------------------------|
+| `params`       | Dynamic parts of the **URL path**        | Comes from the **file name** or **folder** |
+| `searchParams` | Query parameters after `?` in the URL    | Comes from the **URL's query string**     |
+
+---
+
+## 🔹 `params` — (for dynamic routes)
+
+**URL:**  
+```
+/blog/hello-world
+```
+
+**Folder structure:**
+```
+app/
+  blog/
+    [slug]/
+      page.tsx
+```
+
+### 👉 Usage
+
+```tsx
+// app/blog/[slug]/page.tsx
+
+type Props = {
+  params: { slug: string };
+};
+
+export default function BlogPost({ params }: Props) {
+  return <h1>Blog Slug: {params.slug}</h1>;
+}
+```
+
+✅ `params.slug` will be `'hello-world'`
+
+---
+
+## 🔸 `searchParams` — (for query strings)
+
+**URL:**  
+```
+/products?category=shoes&sort=price
+```
+
+### 👉 Usage
+
+```tsx
+// app/products/page.tsx
+
+type Props = {
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export default function Products({ searchParams }: Props) {
+  const category = searchParams.category;
+  const sort = searchParams.sort;
+
+  return (
+    <div>
+      <p>Category: {category}</p>
+      <p>Sort By: {sort}</p>
+    </div>
+  );
+}
+```
+
+✅ Outputs:
+```
+Category: shoes  
+Sort By: price
+```
+
+---
+
+## ✅ Summary Table
+
+| Feature         | `params`                     | `searchParams`                          |
+|-----------------|------------------------------|------------------------------------------|
+| Location        | URL **path**                 | URL **query string**                     |
+| Source          | From folder/file name like `[slug]` | From `?key=value` in the URL          |
+| Usage example   | `/blog/abc` → `params.slug = abc` | `/blog?lang=en` → `searchParams.lang = en` |
+
+---
+---
+---
+
+## `useParams()` – Get Dynamic Route Segments
+`useParams()` is a **React hook** from `next/navigation` that gives access to **dynamic route segments** (like `[id]`, `[slug]`) inside **client components**.
+
+### 📁 Example Route:
+```
+/app/product/[id]/page.tsx
+```
+
+### 🔗 URL:
+```
+/product/42
+```
+
+### 📄 Client Component:
+```tsx
+'use client';
+import { useParams } from 'next/navigation';
+
+const ProductClient = () => {
+  const params = useParams();
+
+  return (
+    <div>
+      <h2>Product ID: {params.id}</h2>
+    </div>
+  );
+};
+
+export default ProductClient;
+```
+
+### 🧠 Output:
+```
+Product ID: 42
+```
+
+---
+---
+---
+
+## `useSearchParams()` – Get Query String Parameters
+`useSearchParams()` is another hook from `next/navigation`. It gives access to the **query parameters** in the URL (the part after `?`).
+
+
+### 🔗 URL:
+```
+/product/42?ref=homepage&sort=asc
+```
+
+### 📄 Client Component:
+```tsx
+'use client';
+import { useSearchParams } from 'next/navigation';
+
+const SearchClient = () => {
+  const searchParams = useSearchParams();
+  const ref = searchParams.get('ref');
+  const sort = searchParams.get('sort');
+
+  return (
+    <div>
+      <p>Referrer: {ref}</p>
+      <p>Sort: {sort}</p>
+    </div>
+  );
+};
+
+export default SearchClient;
+```
+
+### 🧠 Output:
+```
+Referrer: homepage
+Sort: asc
+```
+
+---
+
+## 📋 Comparison Table
+
+| Feature               | `useParams()`                        | `useSearchParams()`                         |
+|----------------------|---------------------------------------|---------------------------------------------|
+| What it reads         | Dynamic path segments (e.g., `[id]`) | URL query string (e.g., `?sort=asc`)         |
+| Returns               | Object `{ id: 'value' }`             | `URLSearchParams` object                    |
+| Example               | `/blog/123` → `{ id: '123' }`        | `/blog?ref=google` → `.get('ref')` = google |
+| Where to use          | Only in client components            | Only in client components                   |
+| Import from           | `next/navigation`                    | `next/navigation`                           |
+
+---
+
+## 💡 Pro Tips
+
+- These only work in **client components** (`'use client'` required at top).
+- You can **combine** both in a single component if needed.
+- `useParams()` returns values as **strings**, even if it looks like a number.
+
+----
+----
+----
+
+## Navigating programmatically in Next.js App Router
+
+Navigating **programmatically** in **Next.js App Router** is super easy and powerful using the `useRouter()` hook from `next/navigation`. Let me walk you through it step-by-step with examples 👇
+
+### ✅ `useRouter()` – Navigate with JavaScript
+
+#### 🔁 1. **Navigate to another route**
+
+```tsx
+'use client';
+import { useRouter } from 'next/navigation';
+
+export default function ButtonComponent() {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push('/about'); // Navigate to /about
+  };
+
+  return <button onClick={handleClick}>Go to About Page</button>;
+}
+```
+
+> ✅ `router.push('/route')` → Navigates to the specified route
+
+---
+
+#### 🔄 2. **Navigate with dynamic route & query params**
+
+```tsx
+'use client';
+import { useRouter } from 'next/navigation';
+
+export default function ProductButton() {
+  const router = useRouter();
+
+  const goToProduct = () => {
+    const id = 101;
+    router.push(`/product/${id}?ref=homepage`);
+  };
+
+  return <button onClick={goToProduct}>View Product</button>;
+}
+```
+
+---
+
+#### 🔙 3. **Go Back / Forward in History**
+
+```tsx
+'use client';
+import { useRouter } from 'next/navigation';
+
+export default function NavButtons() {
+  const router = useRouter();
+
+  return (
+    <div>
+      <button onClick={() => router.back()}>⬅️ Go Back</button>
+      <button onClick={() => router.forward()}>➡️ Go Forward</button>
+    </div>
+  );
+}
+```
+
+---
+
+#### ✏️ 4. **Replace URL (without pushing new history)**
+
+```tsx
+router.replace('/dashboard'); // No history entry added
+```
+
+---
+
+#### 💥 5. **Refresh the current route**
+
+```tsx
+router.refresh(); // Useful after data mutation
+```
+
+---
+
+#### 🚀 Summary of `useRouter()` methods
+
+| Method              | Purpose                                |
+|---------------------|-----------------------------------------|
+| `push(url)`         | Navigate to a new route                 |
+| `replace(url)`      | Navigate without adding to history      |
+| `back()`            | Go back in browser history              |
+| `forward()`         | Go forward in history                   |
+| `refresh()`         | Re-fetch server components on the page  |
+
+#### ✅ router.push() with Object (Query Params)
+
+🔧 Syntax:
+```tsx
+Copy
+Edit
+router.push({
+  pathname: '/products/101',
+  query: {
+    ref: 'demo',
+    campaign: 'summer'
+  }
+});
+```
+
+**This results in the URL: /products/101?ref=demo&campaign=summer**
+
+
+---
+---
+---
+
