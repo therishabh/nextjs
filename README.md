@@ -1627,10 +1627,9 @@ router.refresh(); // Useful after data mutation
 
 #### ✅ router.push() with Object (Query Params)
 
-🔧 Syntax:
+##### 🔧 Syntax:
+
 ```tsx
-Copy
-Edit
 router.push({
   pathname: '/products/101',
   query: {
