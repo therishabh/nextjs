@@ -721,3 +721,74 @@ export default function AdminLayout({ children }) {
 ---
 ---
 
+## 🧱 What Are Nested Layouts in Next.js?
+
+**Nested layouts** let you have multiple layers of layouts — each applying to a different part of your app. This is useful when different sections (like dashboard, profile, etc.) need their **own layout inside a shared layout**.
+
+---
+
+### 📁 Folder Structure:
+
+```
+app/
+├── layout.tsx            ← Root layout (used everywhere)
+├── dashboard/
+│   ├── layout.tsx        ← Dashboard-specific layout
+│   ├── page.tsx
+│   └── settings/
+│       └── page.tsx
+```
+
+---
+
+### 🧩 How It Works:
+
+1. `/dashboard/settings` will use:
+   - `app/layout.tsx` (global)
+   - `app/dashboard/layout.tsx` (section-specific)
+   - `app/dashboard/settings/page.tsx` (page content)
+
+---
+
+### 💡 Example Code:
+
+#### `app/layout.tsx` (global)
+
+```tsx
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <Header />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+#### `app/dashboard/layout.tsx` (nested layout)
+
+```tsx
+export default function DashboardLayout({ children }) {
+  return (
+    <div className="dashboard-layout">
+      <Sidebar />
+      <div>{children}</div>
+    </div>
+  );
+}
+```
+
+#### `app/dashboard/settings/page.tsx`
+
+```tsx
+export default function SettingsPage() {
+  return <h1>Settings</h1>;
+}
+```
+
+---
+---
+---
+
