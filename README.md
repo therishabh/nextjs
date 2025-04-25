@@ -1646,3 +1646,169 @@ router.push({
 ---
 ---
 
+## ✅ What is `redirect` from `next/navigation`?
+
+`redirect()` is a **built-in function** in Next.js App Router that allows you to **immediately redirect** the user **on the server** (or during rendering of a server component or route handler).
+
+It **does not render anything** — it **stops execution** and sends the user to a new route.
+
+---
+
+## 🚀 When to Use `redirect()`
+
+- ✅ Inside **server components**
+- ✅ Inside **layout.tsx**, **page.tsx**, or **route handlers**
+- ✅ On server-side **logic** before rendering a page
+- ❌ **NOT** usable in client components (use `router.push()` there instead)
+
+---
+
+## 🧪 Example 1: Redirect from a Page
+
+### File: `/app/dashboard/page.tsx`
+
+```tsx
+import { redirect } from 'next/navigation';
+
+export default function DashboardPage() {
+  const isLoggedIn = false;
+
+  if (!isLoggedIn) {
+    redirect('/login'); // Redirects to /login if not logged in
+  }
+
+  return (
+    <div>
+      <h1>Welcome to your dashboard!</h1>
+    </div>
+  );
+}
+```
+
+---
+
+## 🧪 Example 2: Redirect with Query Parameters
+
+```tsx
+redirect('/products/123?ref=dashboard');
+```
+
+---
+
+## 🔄 Redirect vs router.push
+
+| Feature              | `redirect()`                            | `router.push()`                        |
+|----------------------|------------------------------------------|----------------------------------------|
+| Where to use         | Server components or route handlers      | Client components (`'use client'`)     |
+| Executes             | On the server (before rendering)         | On the client (after rendering)        |
+| Stops rendering      | ✅ Yes – terminates page render          | ❌ No – continues rendering             |
+| Use case             | Authentication, access control           | Button clicks, navigation after events |
+
+---
+
+## ✅ Use Case Example: Protecting a Page
+
+```tsx
+// app/profile/page.tsx
+import { redirect } from 'next/navigation';
+import { getCurrentUser } from '@/lib/auth';
+
+export default async function ProfilePage() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect('/login');
+  }
+
+  return <div>Welcome, {user.name}!</div>;
+}
+```
+
+---
+
+## ⚠️ Important Notes
+
+- `redirect()` must be **called during render time**, not inside `useEffect`.
+- It throws a special error internally to stop rendering and redirect.
+
+---
+---
+---
+
+## 🧱 What are **Templates** in Next.js?
+
+In **Next.js App Router**, a **`template.tsx`** (or `.js`) file is like a special version of `layout.tsx` that:
+
+✅ Is **re-rendered on every navigation**  
+✅ Can **hold dynamic or per-page UI** that shouldn't be cached  
+✅ Still shares structure like a layout (header, sidebar, etc.)  
+
+> 🧠 Think of it as a layout that resets on every navigation — perfect for pages that need a **fresh state** every time they’re visited.
+
+---
+
+## 🆚 `layout.tsx` vs `template.tsx`
+
+| Feature                 | `layout.tsx`                             | `template.tsx`                            |
+|-------------------------|-------------------------------------------|--------------------------------------------|
+| Renders once            | ✅ Yes (cached per segment)              | ❌ No (re-renders on each navigation)       |
+| Shared between routes   | ✅ Yes (persists between routes)         | ❌ No (doesn’t persist)                     |
+| Use case                | Consistent layout (navbars, sidebars)    | Dynamic UI, onboarding flows, animations   |
+
+---
+
+## 🔧 Basic Example
+
+### Folder structure:
+
+```
+/app
+  /dashboard
+    layout.tsx       ← shared layout (static)
+    template.tsx     ← re-rendered on each route load
+    /analytics
+      page.tsx
+    /settings
+      page.tsx
+```
+
+### ✅ `/app/dashboard/template.tsx`
+
+```tsx
+import React from 'react';
+
+export default function DashboardTemplate({ children }: { children: React.ReactNode }) {
+  console.log('🔁 Template re-rendered');
+
+  return (
+    <div className="p-4 border border-blue-500">
+      <h2>✨ Dashboard Section (from template.tsx)</h2>
+      {children}
+    </div>
+  );
+}
+```
+
+Every time you navigate between `/dashboard/analytics` and `/dashboard/settings`, this template will **re-render** — useful for page-specific animations or state resets.
+
+---
+
+## 🎯 When to Use `template.tsx`
+
+Use it when:
+
+✅ You want **fresh rendering** per route (like a wizard, stepper, or transition)  
+✅ You want **animations or loading effects** that restart on each navigation  
+✅ You don’t want **layout caching**
+
+---
+
+## ⚠️ Tip: Use `layout.tsx` for persistent UI
+
+Use `layout.tsx` when you want something **consistent** (like a sidebar), and `template.tsx` when you want things to **refresh** per route segment.
+
+---
+---
+---
+
+
